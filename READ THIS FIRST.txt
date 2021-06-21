@@ -1,0 +1,8 @@
+Before running these php files, make sure you import freshmart.sql in your local db. 
+
+To do that.. first make a database named 'freshmart' all lowercaps..  and then import the sql file. 
+
+Trader interface is still incomplete in this version and i'll upload the complete version once we combine all work in progress into single easy to use-read-manage Repository. 
+
+All tables are not present in this sql file. 
+
