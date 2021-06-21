@@ -1,0 +1,314 @@
+// ALL selector
+
+*{  
+    font-family:'Proxima Nova', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
+    padding: 0em;
+    margin: 0em;
+}
+
+// Utility Classes
+.text-gray-small{
+    color: gray;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.w-all{
+    width: 100%;
+}
+
+.price-text{
+    font-weight: 500;
+}
+
+//Declaring colors for all projects
+
+$primary-color: rgb(129, 192, 34);
+$dark-color : #333;
+$light-gray: rgb(206, 206, 206);
+
+
+//Font awesome CSS
+
+.checked{
+    color:orange;
+}
+
+.unchecked{
+    color: $light-gray;
+}
+
+.fa-plus-circle, .fa-minus-circle{
+    color:$primary-color;
+}
+
+
+
+// Navbar CSS
+
+.container-fluid{
+    width: 80%;
+    margin: auto;
+
+    @media only screen and (max-width: 800px) {
+        width: 90%;
+    }
+
+}
+
+.navbar-container{
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+
+
+//Product CSS
+
+.product-container{
+    width: 100%;
+    display: flex;
+    padding: 0em auto;
+
+    @media only screen and (max-width: 500px) {
+        flex-direction: column;
+    }
+
+    .product-image-container{
+        padding: 0.5em;
+        flex: 4;
+
+        @media only screen and (max-width: 500px) {
+        padding: 2em;
+        }
+
+
+        img{
+            display: block;
+            margin: auto;
+
+            height:70vh;
+            width:100%;    
+            
+            object-fit: contain;
+        }
+    }
+
+    .product-info-container{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        flex:5;
+
+        margin: 0.5em;
+        padding: 1em 0.2em;
+
+        div{
+            margin: 0.4em 0.3em 0.4em 0em;
+        }
+
+
+        .product-heading{
+            font-weight: 700;
+            font-size: 1.8em;
+        }
+
+        .product-brand{
+            font-weight: 700;
+            text-transform: uppercase;
+            color: $dark-color;
+            font-size: 0.8em;
+        }
+
+        .product-price{
+            font-weight: 500;
+            font-size: 1.2em;
+        }
+
+        .product-form{
+
+            .test{
+                display: flex;
+                color: white;
+                width: 300px;
+                height: 30px;
+                border: 1px solid rgb(199, 199, 199);
+                text-align: center;
+
+                @media only screen and (max-width: 800px) {
+                    width: 100%;
+                    }
+
+                div{
+                    margin: 0px;
+                }
+
+                .counter{
+                    flex: 5;
+
+                    input{
+                        width: 100%;
+                        border: none;
+                        padding: 5px;
+                        text-align: center;
+                    }
+                }
+
+                .subtract, .addition{
+                    flex: 1;
+                    color: white;
+                    font-size: 20px;
+                    font-weight: 800;
+                    background-color: $dark-color;
+                    cursor: pointer;
+
+                    &:hover{
+                        background-color: $primary-color;
+                    }
+                }
+            }
+
+
+            /* This piece of code hides increase/decrease arrow 
+            shown in input:number field */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+
+            input[type="submit"]{
+                background-color: $dark-color;
+                border: $dark-color 2px solid;
+                width: 300px;
+                padding: 0.5em 0.5em;
+
+                color: white;  
+                transition: 0.1s ease-out;
+
+                @media only screen and (max-width: 800px) {
+                    width: 100%;
+                    }
+
+                &:hover{
+                    background-color: $primary-color;
+                    border: $primary-color 2px solid;
+                }
+            }
+        }
+    }
+
+}
+
+//PRODUCT DESCRIPTION
+
+.product-description{
+  
+    padding: 1em;
+    border: $light-gray 1px solid;
+    border-radius: 10px;
+    color: $dark-color;
+    margin-bottom: 1em;
+
+    p{
+        margin: 0.5em 0em;
+    }
+}
+
+
+//MORE PRODUCT FROM THIS SHOP
+
+.more-product-container{
+    padding: 2em 1em;
+    border: $light-gray 1px solid;
+    border-radius: 10px;
+
+    .heading{    
+        margin-bottom: 1em;
+        color: $dark-color;   
+    }
+
+}
+
+
+
+
+//Product Feedback
+
+.product-feedback-container{
+    padding: 2em 1em;
+    border: $light-gray 1px solid;
+    border-radius: 10px;
+    margin-bottom: 1em;
+
+    .heading{    
+        margin-bottom: 1em;
+        color: $dark-color;   
+    }
+
+
+    .feedback{
+        background-color: rgb(240, 240, 240);
+        border-radius: 10px;
+        padding: 0.8em 0.5em;
+        margin-bottom: 1em;
+
+        &:last-child{
+            margin-bottom: 0em;
+        }
+    }
+    
+    .comment{
+        color: #333;
+    }
+
+    .user{
+        margin-top: 0.4em;
+        font-size: 0.8em;
+        color: $dark-color;
+        font-weight: 700;
+        text-transform: uppercase;
+
+    }
+
+    #feedback-prompt{
+        cursor: pointer;
+        transition: 0.2s;
+
+        #sub-heading{
+            font-size: 0.8em;
+            color:$dark-color;
+        }
+
+        &:hover{
+            background-color: white;
+        }
+
+        select, input {
+            display: none;
+            padding: 0.5em 0.5em;
+            border: $light-gray 1px solid;
+            border-radius: 5px;
+            margin-top: 0.5em;
+        }
+
+        #feedback-comment{
+            width: 100%;
+            padding: 1em 0.5em;
+            
+        }
+
+        #feedback-button{
+            background-color: $primary-color;
+            color: white;
+            width: 70px;
+            cursor: pointer;
+        }
+
+        
+    }
+
+
+}

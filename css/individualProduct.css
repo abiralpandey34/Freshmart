@@ -1,0 +1,301 @@
+* {
+  font-family: 'Proxima Nova', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0em;
+  margin: 0em;
+}
+
+.text-gray-small {
+  color: gray;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.w-all {
+  width: 100%;
+}
+
+.price-text {
+  font-weight: 500;
+}
+
+.checked {
+  color: orange;
+}
+
+.unchecked {
+  color: #cecece;
+}
+
+.fa-plus-circle, .fa-minus-circle {
+  color: #81c022;
+}
+
+.container-fluid {
+  width: 80%;
+  margin: auto;
+}
+
+@media only screen and (max-width: 800px) {
+  .container-fluid {
+    width: 90%;
+  }
+}
+
+.navbar-container {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.product-container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0em auto;
+}
+
+@media only screen and (max-width: 500px) {
+  .product-container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
+.product-container .product-image-container {
+  padding: 0.5em;
+  -webkit-box-flex: 4;
+      -ms-flex: 4;
+          flex: 4;
+}
+
+@media only screen and (max-width: 500px) {
+  .product-container .product-image-container {
+    padding: 2em;
+  }
+}
+
+.product-container .product-image-container img {
+  display: block;
+  margin: auto;
+  height: 70vh;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.product-container .product-info-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 5;
+      -ms-flex: 5;
+          flex: 5;
+  margin: 0.5em;
+  padding: 1em 0.2em;
+}
+
+.product-container .product-info-container div {
+  margin: 0.4em 0.3em 0.4em 0em;
+}
+
+.product-container .product-info-container .product-heading {
+  font-weight: 700;
+  font-size: 1.8em;
+}
+
+.product-container .product-info-container .product-brand {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #333;
+  font-size: 0.8em;
+}
+
+.product-container .product-info-container .product-price {
+  font-weight: 500;
+  font-size: 1.2em;
+}
+
+.product-container .product-info-container .product-form {
+  /* This piece of code hides increase/decrease arrow 
+            shown in input:number field */
+}
+
+.product-container .product-info-container .product-form .test {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  color: white;
+  width: 300px;
+  height: 30px;
+  border: 1px solid #c7c7c7;
+  text-align: center;
+}
+
+@media only screen and (max-width: 800px) {
+  .product-container .product-info-container .product-form .test {
+    width: 100%;
+  }
+}
+
+.product-container .product-info-container .product-form .test div {
+  margin: 0px;
+}
+
+.product-container .product-info-container .product-form .test .counter {
+  -webkit-box-flex: 5;
+      -ms-flex: 5;
+          flex: 5;
+}
+
+.product-container .product-info-container .product-form .test .counter input {
+  width: 100%;
+  border: none;
+  padding: 5px;
+  text-align: center;
+}
+
+.product-container .product-info-container .product-form .test .subtract, .product-container .product-info-container .product-form .test .addition {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  background-color: #333;
+  cursor: pointer;
+}
+
+.product-container .product-info-container .product-form .test .subtract:hover, .product-container .product-info-container .product-form .test .addition:hover {
+  background-color: #81c022;
+}
+
+.product-container .product-info-container .product-form input::-webkit-outer-spin-button,
+.product-container .product-info-container .product-form input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.product-container .product-info-container .product-form input[type="submit"] {
+  background-color: #333;
+  border: #333 2px solid;
+  width: 300px;
+  padding: 0.5em 0.5em;
+  color: white;
+  -webkit-transition: 0.1s ease-out;
+  transition: 0.1s ease-out;
+}
+
+@media only screen and (max-width: 800px) {
+  .product-container .product-info-container .product-form input[type="submit"] {
+    width: 100%;
+  }
+}
+
+.product-container .product-info-container .product-form input[type="submit"]:hover {
+  background-color: #81c022;
+  border: #81c022 2px solid;
+}
+
+.product-description {
+  padding: 1em;
+  border: #cecece 1px solid;
+  border-radius: 10px;
+  color: #333;
+  margin-bottom: 1em;
+}
+
+.product-description p {
+  margin: 0.5em 0em;
+}
+
+.more-product-container {
+  padding: 2em 1em;
+  border: #cecece 1px solid;
+  border-radius: 10px;
+}
+
+.more-product-container .heading {
+  margin-bottom: 1em;
+  color: #333;
+}
+
+.product-feedback-container {
+  padding: 2em 1em;
+  border: #cecece 1px solid;
+  border-radius: 10px;
+  margin-bottom: 1em;
+}
+
+.product-feedback-container .heading {
+  margin-bottom: 1em;
+  color: #333;
+}
+
+.product-feedback-container .feedback {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 0.8em 0.5em;
+  margin-bottom: 1em;
+}
+
+.product-feedback-container .feedback:last-child {
+  margin-bottom: 0em;
+}
+
+.product-feedback-container .comment {
+  color: #333;
+}
+
+.product-feedback-container .user {
+  margin-top: 0.4em;
+  font-size: 0.8em;
+  color: #333;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.product-feedback-container #feedback-prompt {
+  cursor: pointer;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.product-feedback-container #feedback-prompt #sub-heading {
+  font-size: 0.8em;
+  color: #333;
+}
+
+.product-feedback-container #feedback-prompt:hover {
+  background-color: white;
+}
+
+.product-feedback-container #feedback-prompt select, .product-feedback-container #feedback-prompt input {
+  display: none;
+  padding: 0.5em 0.5em;
+  border: #cecece 1px solid;
+  border-radius: 5px;
+  margin-top: 0.5em;
+}
+
+.product-feedback-container #feedback-prompt #feedback-comment {
+  width: 100%;
+  padding: 1em 0.5em;
+}
+
+.product-feedback-container #feedback-prompt #feedback-button {
+  background-color: #81c022;
+  color: white;
+  width: 70px;
+  cursor: pointer;
+}
+/*# sourceMappingURL=individualProduct.css.map */
