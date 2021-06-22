@@ -63,8 +63,8 @@
                   <i class="far fa-user"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" href="#">Login</a>
-                  <a class="dropdown-item" href="#">Sign up</a>
+                  <a class="dropdown-item" href="login.php">Login</a>
+                  <a class="dropdown-item" href="customer-registration.php">Sign up</a>
                 </div>
               </div>
             </div>
@@ -576,7 +576,7 @@
                   <div class="cover-f">
                   	<h4>ABOUT US</h4>
                     <li><a href="#">Who are we?</a></li>
-                    <li><a href="blog.index">Why us?</a></li>
+                    <li><a href="blog.html">Why us?</a></li>
                     <li><a href="#">Be a member</a></li>
                   </div>
                 </div>

@@ -28,7 +28,7 @@ if(isset($_POST['register_trader'])){
                                 <input type="text"   placeholder="Full Name" name="user_name" value="<?php if(isset($_POST['user_name'])){echo ($_POST['user_name']);}?>" required />
                                 <input type="email"  placeholder="Email" name="user_email" value="<?php if(isset($_POST['user_email'])){echo ($_POST['user_email']);}?>" required />
                                 <input type="email"  placeholder="Re-enter Email" name="user_email_check" value="<?php if(isset($_POST['user_email_check'])){echo ($_POST['user_email_check']);}?>" required />
-                                <select name="trader_type" required>
+                                <select name="trader_type" class="trader-type" required>
                                     <option value="null" selected disabled>Trader Type</option>
                                     <option value="Greengrocer" <?php if(isset($_POST['trader_type']) && $_POST['trader_type'] == 'Greengrocer'){echo "selected";}?> > Greengrocer </option>
                                     <option value="Butcher"<?php if(isset($_POST['trader_type']) && $_POST['trader_type'] == 'Butcher'){echo "selected";}?>> Butcher </option>

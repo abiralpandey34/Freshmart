@@ -37,6 +37,7 @@
                         <span>I agree to the terms and conditions</span>
                     </div>
                     <input type="submit" name="register_customer"  value="Register" />
+                    <p>Want to register as a trader instead? Click <a href="trader.php">here </a>
                 </div>
             </div>
         </form> 

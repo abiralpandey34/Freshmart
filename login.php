@@ -87,7 +87,7 @@
                         <div class="col-lg-7">
                         
                         <a href="forgot_password.php">Forgot Password</a>'
-                            <p>Don't have an account? <a href="#">Register here</a></p>
+                            <p>Don't have an account? <a href="customer-registration.php">Register here</a></p>
                         </div>
                     </div>
                 </form>

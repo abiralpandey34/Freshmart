@@ -34,7 +34,7 @@
   width: fit-content;
   margin: 35px auto;
   padding: 10px 30px;
-  color: #96bf2e;
+  color: #333;
   font-size: 30px;
   background-color: white;
 }
@@ -65,6 +65,14 @@ input[type=submit]:hover {
   background: white;
   border: 2px solid #96bf2e;
   color: #96bf2e;
+}
+
+/* Trader-type was added by Abiral */
+.trader-type{
+  padding: 5px 5px;
+  margin-top: 5px;
+  border: 1px solid rgb(179, 179, 179);
+  /* background-color: rgb(245, 245, 245); */
 }
 
 .check-box {
