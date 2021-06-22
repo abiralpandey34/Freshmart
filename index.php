@@ -28,7 +28,7 @@
 
 <body>
 
-  <section id="logo-search-cart">
+  <section id="logo-serch-cart">
     <div class="container">
       <div class="row">
         <div class="col-md-4 col-sm-12 col-lg-4">
