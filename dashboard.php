@@ -29,7 +29,7 @@
 <body>
   <?php 
       include 'reuseable/connection.php';
-      include 'reuseable/errorReporting.php'
+      include 'reuseable/errorReporting.php';
   ?>
 
   <section id="logo-serch-cart">
