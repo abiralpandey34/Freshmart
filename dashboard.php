@@ -451,24 +451,23 @@
             <div class="tab-pane fade" id="v-pills-settingv" role="tabpanel" aria-labelledby="v-pills-settings-tab">
               <div class="p-list">
                 <div class="card">
-                    <?php 
+                    
+                    <!-- Table hasnt been created so, commenting this out. 
 
-                    //Table hasnt been created so, commenting this out. 
+                    $commentQuery = "SELECT * FROM FEEDBACK WHERE user_id = 3;";
 
-                    // $commentQuery = "SELECT * FROM FEEDBACK WHERE user_id = 3;";
-
-                    // $commentResult = mysqli_query($connection, $commentQuery);
-                    // while($commentRow = mysqli_fetch_assoc($commentResult)){
+                    $commentResult = mysqli_query($connection, $commentQuery);
+                    while($commentRow = mysqli_fetch_assoc($commentResult)){
 
 
-                    //   echo "
-                    //     <div class='card-body'>
-                    //       <p>$commentRow[feedback_description]</p>
-                    //     </div>
-                    //     "
-                    // }
+                      echo "
+                        <div class='card-body'>
+                          <p>$commentRow[feedback_description]</p>
+                        </div>
+                        "
+                    } -->
 
-                    ?>
+                    
                   <div class="card-body">
                     <p>code is generated but table hasnt  been created so, code is commented for now. </p>
                   </div>

@@ -758,3 +758,65 @@ text-align: center;
 		width: 100%;
 	}
 }
+// START BLOGS===============
+// START BLOGS===============
+#blog-wrapper {
+	padding-top: 50px;
+}
+#blog-wrapper .blog-img {
+	height: 250px;
+	width: 100%;
+}
+#blog-wrapper .blog-img img {
+	height: 250px;
+	width: 100%;
+}
+#blog-wrapper h4 {
+	color: #666;
+}
+#blog-wrapper p {
+	color: rgb(139, 139, 139);
+	text-align: justify;
+	line-height: 27px;
+}
+#blog-wrapper .moretext {
+	display: none;
+  }
+  #blog-wrapper .moretextt {
+	display: none;
+  }
+  #blog-wrapper .moretexttt {
+	display: none;
+  }
+  #blog-wrapper .btn {
+	  border-color: #666;
+	  border-radius: 8vw;
+	  color: #666;
+	  box-shadow: unset;
+	  width: 120px;
+  }
+  #blog-wrapper .btn:hover {
+	  background-color: $primary-color;
+	  color: #fff;
+  }
+  #blog-wrapper hr {
+	  border: 3px solid #f6f6f6;
+  }
+  #blog-wrapper .page-link {
+	  color: $primary-color;
+  }
+  #blog-wrapper .btn-outline-primary {
+	  margin-left: 40px;
+  }
+  @media(max-width:576px) {
+	#blog-wrapper .blog-img img {
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+	#blog-wrapper {
+		padding-top: 30px;
+	}
+	#blog-wrapper .btn-outline-primary {
+		margin-left: 20px;
+	}
+  }

@@ -576,7 +576,7 @@
                   <div class="cover-f">
                   	<h4>ABOUT US</h4>
                     <li><a href="#">Who are we?</a></li>
-                    <li><a href="#">Why us?</a></li>
+                    <li><a href="blog.index">Why us?</a></li>
                     <li><a href="#">Be a member</a></li>
                   </div>
                 </div>
