@@ -103,6 +103,7 @@
         }
     ?>
 
+
                 <div class='product-feedback-container'>
                     <div class="heading"><h4>What our customer says?</h4></div>
 
@@ -110,29 +111,88 @@
 
                         <div id="sub-heading">Leave a comment </div>
 
-                        <input type="text" name="feedback-comment" id="feedback-comment" placeholder="Leave a review">
+                        <form action="" method="GET">
+                            <input type="text" name="feedback-comment" id="feedback-comment" placeholder="Leave a review">
 
-                        <select name="feedback-rating" id="feedback-rating">
-                            <option value="5">5 Star</option>
-                            <option value="4">4 Star</option>
-                            <option value="3">3 Star</option>
-                            <option value="2">2 Star</option>
-                            <option value="1">1 Star</option>
-                        </select>
+                            <select name="feedback-rating" id="feedback-rating">
+                                <option value="5">5 Star</option>
+                                <option value="4">4 Star</option>
+                                <option value="3">3 Star</option>
+                                <option value="2">2 Star</option>
+                                <option value="1">1 Star</option>
+                            </select>
 
-                        <input type="button" value="Post it" name="post" id="feedback-button">
-
+                            <input type="submit" value="Post it" name="feedback-button" id="feedback-button">
+                        </form>
                     </div>
- 
-                    <div class="feedback">
-                        <div class="rating"><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span></div>
-                        <div class="comment"> This is the first comment </div>
-                        <div class="user">- Abiral Pandey</div>
-                    </div>
+
                     
+                <?php 
+                    /*  This part is for comment posting. It is not working completely fine. . */
+
+                    header("Cache-Control: no cache");
+                    // session_cache_limiter("private_no_expire");
+                
+                    if(isset($_GET['feedback-button'])){
+
+                        $feedbackComment = filter_var(trim($_GET['feedback-comment'], FILTER_SANITIZE_SPECIAL_CHARS));
+                        $feedbackRating = $_GET['feedback-rating'];
+                        
+
+                        $feedbackPostQuery = "INSERT INTO feedback(customer_id, product_id, product_comment, product_rating) VALUES (1, 9, '$feedbackComment', $feedbackRating)";
+                        $feedbackPostResult = mysqli_query($connection, $feedbackPostQuery);
+
+                    }
+
+
+                    /*
+
+                    This part is shows comments of the product. Few tasks are still incomplete:
+                    
+                    1. We have to fetch Customer full name. 
+                    2. Check if comment_active is true or not. 
+
+                    */
+                    $feedbackQuery = "SELECT f.product_comment, u.username, f.product_rating FROM feedback f INNER JOIN user u ON u.user_id = f.customer_id WHERE f.product_id = $productToDisplay";
+                    $feedbackResult = mysqli_query($connection, $feedbackQuery);
+                    $feedbackresultCheck = mysqli_num_rows($feedbackResult);
+
+                    if($feedbackresultCheck > 0){
+
+                        while($feedbackRow = mysqli_fetch_assoc($feedbackResult)){
+
+                            $commentRating = $feedbackRow['product_rating'];
+                            $i = 1;
+
+                            echo "
+                            <div class='feedback'>
+                                <div class='rating'>";
+                                    while($i <= 5){
+                                        if( $i<=$commentRating){
+                                            echo "<span class='fa fa-star checked'></span>";
+                                            $i = $i +1;
+                                        }
+
+                                        else{                                
+                                        echo "<span class='fa fa-star unchecked'></span>";
+                                            $i = $i +1;
+                                        }
+                                    }
+
+                                echo "
+                                </div>
+
+                                <div class='comment'> $feedbackRow[product_comment] </div>
+                                <div class='user'>- $feedbackRow[username]</div>
+                            </div>";
+                        }
+                    }
+                    else{
+                        echo "<p>No comments found on this product. Be the first to write.</p>";
+                    }
+
+                ?>
                 </div>
-
-
     
 
 
