@@ -24,6 +24,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
   <title> Freshmart</title>
+
 </head>
 
 <body>
@@ -293,13 +294,14 @@
                           <td><b>Name</b></td>
                           <td><b>Price</b></td>
                           <td><b>Rating</b></td>
+                          <td><b>Shop</b></td>
                         </tr>
 
                     <?php
 
                       // Search Box is hard to implement because, searching reloades page and it goes back to dashboard-submenu 
 
-                      $productByTraderQuery = "SELECT * FROM product p INNER JOIN shop s ON s.shop_id = p.shop_id WHERE p.shop_id=1";
+                      $productByTraderQuery = "SELECT *, s.shop_name FROM product p INNER JOIN shop s ON s.shop_id = p.shop_id WHERE p.shop_id=1";
       
                       $productByTraderResult = mysqli_query($connection, $productByTraderQuery);
 
@@ -314,9 +316,10 @@
                                 <td>$shopRow[product_name]</td>
                                 <td>$shopRow[product_price]</td>
                                 <td>$shopRow[product_rating]</td>
+                                <td>$shopRow[shop_name]</td>
                                 <td> <a href='editProduct.php?productID=$shopRow[product_id]'> EDIT </a> </td>
-
-                              </tr>
+                              
+                              
                               ";
                         }
 
@@ -335,9 +338,8 @@
                   </div>
 
                 </div>
-                <div class="views">
-                  <span><a href="#" name="productListViewAll">View all</a></span>
-                </div>
+
+                
                 <div class="product-img">
                   <div class="row">
                     <div class="col-md-4">
@@ -391,6 +393,7 @@
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
 
@@ -417,7 +420,7 @@
                         <div class="col-md-8">
                           <?php 
 
-                          $shopQuery = "SELECT s.shop_name, s.shop_address, s.no_of_staff, u.username FROM shop s INNER JOIN user u ON s.trader_id=u.user_id WHERE u.user_id=3;";
+                          $shopQuery = "SELECT s.shop_name, s.shop_address, s.shop_type,u.user_phone_number, u.user_fullname FROM shop s INNER JOIN user u ON s.user_id=u.user_id WHERE u.user_id=1;";
           
                           $shopResult = mysqli_query($connection, $shopQuery);
                           while($shopRow = mysqli_fetch_assoc($shopResult)){
@@ -425,10 +428,9 @@
 
                             echo "
                               <h5><span>Shop name:</span> $shopRow[shop_name]</h5>
-                              <h5><span>Shop A:</span> $shopRow[shop_name]</h5>
-                              <h5><span>Contact no:</span> $shopRow[shop_address]</h5>
-                              <h5><span>Shop owner:</span> $shopRow[username]</h5>
-                              <h5><span>No. of staff:</span> $shopRow[no_of_staff]</h5>";
+                              <h5><span>Shop Address:</span> $shopRow[shop_address]</h5>
+                              <h5><span>Contact no:</span> $shopRow[user_phone_number]</h5>
+                              <h5><span>Shop owner:</span> $shopRow[user_fullname]</h5>";
                           }
 
                           ?>
@@ -451,26 +453,40 @@
             <div class="tab-pane fade" id="v-pills-settingv" role="tabpanel" aria-labelledby="v-pills-settings-tab">
               <div class="p-list">
                 <div class="card">
-                    
-                    <!-- Table hasnt been created so, commenting this out. 
 
-                    $commentQuery = "SELECT * FROM FEEDBACK WHERE user_id = 3;";
+                    <?php
+                    //Table hasnt been created so, commenting this out. 
+
+                    $commentQuery = "SELECT f.product_comment,f.product_id, f.product_rating, p.product_name FROM feedback f INNER JOIN product p ON p.product_id = f.product_id WHERE f.user_id = 1;";
 
                     $commentResult = mysqli_query($connection, $commentQuery);
                     while($commentRow = mysqli_fetch_assoc($commentResult)){
+                      $rating = $commentRow['product_rating'];
+                      $i = 1; 
 
 
                       echo "
-                        <div class='card-body'>
-                          <p>$commentRow[feedback_description]</p>
-                        </div>
-                        "
-                    } -->
+                        <div class='card-body' style='background-color:#f0f0f0; margin:10px;'>
+                        <span>";
 
-                    
-                  <div class="card-body">
-                    <p>code is generated but table hasnt  been created so, code is commented for now. </p>
-                  </div>
+                            while($i <= 5){
+                              if( $i<=$rating){
+                                  echo "<span class='fa fa-star checked' style='color:orange;'></span>";
+                                  $i = $i +1;
+                              }
+
+                              else{                                
+                                echo "<span class='fa fa-star unchecked' style='color: rgb(215, 215, 215) ;'></span>";
+                                  $i = $i +1;
+                              }
+                          }
+
+                          echo "</span> <br> <span> Comment   : $commentRow[product_comment]<br> </span>
+                          <span> Product: <a href='individualProduct.php?productID=$commentRow[product_id]'> $commentRow[product_name] </a></span>
+                        </div>
+                        ";
+                    }
+                  ?>
                 </div>
               </div>
             </div>
@@ -485,7 +501,7 @@
 
                         // $query =  "SELECT * FROM user WHERE user_type = 'trader';";
 
-                        $query = "SELECT u.username, u.password, u.user_type, s.shop_name FROM shop s INNER JOIN user u ON s.trader_id = u.user_id where u.username='ashik';";
+                        $query = "SELECT u.user_fullname, u.user_email, u.user_phone_number, u.user_address, s.shop_name FROM shop s INNER JOIN user u ON s.user_id = u.user_id where u.user_username='ashik12';";
                         // $shop_name = mysqli_query($connection, $query2);
                         // mysqli_close($connection);
                         
@@ -494,10 +510,10 @@
                         while($row = mysqli_fetch_assoc($result)){
 
                           echo "
-                            <h5><span>Name:</span> $row[username]</h5>
-                            <h5><span>Contact:</span> $row[username]</h5>
-                            <h5><span>Address:</span> $row[username]</h5>
-                            <h5><span>Email:</span> $row[password]</h5>
+                            <h5><span>Name:</span> $row[user_fullname]</h5>
+                            <h5><span>Contact:</span> $row[user_phone_number]</h5>
+                            <h5><span>Address:</span> $row[user_address]</h5>
+                            <h5><span>Email:</span> $row[user_email]</h5>
                             <h5><span>Shop:</span> $row[shop_name]</h5>";
                         }
 

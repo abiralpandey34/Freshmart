@@ -67,14 +67,6 @@ input[type=submit]:hover {
   color: #96bf2e;
 }
 
-/* Trader-type was added by Abiral */
-.trader-type{
-  padding: 5px 5px;
-  margin-top: 5px;
-  border: 1px solid rgb(179, 179, 179);
-  /* background-color: rgb(245, 245, 245); */
-}
-
 .check-box {
   display: -webkit-box;
   display: -ms-flexbox;

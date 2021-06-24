@@ -21,7 +21,7 @@
 
   <!-- NAVBAR STARTS HERE -->
     <div class="navbar-container">
-         NAVBAR GOES HERE
+         <a href="index.php">NAVBAR GOES HERE</a>
     </div>
 
     <?php 
@@ -31,6 +31,19 @@
         //This piece of code retrieves Product ID from the URL.
         $productToDisplay = $_GET['productID'];
 
+        //Storing current User_id into a variable
+        $currentUserId = 1;
+
+        //Get shop name of this product_id
+        $shopQuery = "SELECT s.shop_name FROM shop s INNER JOIN product p ON s.shop_id = p.shop_id WHERE p.product_id = $productToDisplay";
+        $shopQueryResult = mysqli_query($connection, $shopQuery);
+
+        while($shopRow = mysqli_fetch_assoc($shopQueryResult)){
+            $shopName = $shopRow['shop_name'];
+        }
+
+
+        //Getting other details of product from product table.
         $sql_query = "SELECT * FROM product WHERE product_id = $productToDisplay";
         $result = mysqli_query($connection, $sql_query);
         $resultCheck = mysqli_num_rows($result);
@@ -52,8 +65,8 @@
 
                     <div class='product-info-container'>
                         <div class='product-heading'>$row[product_name]</div>
-                        <div class='product-brand'>Brand: FRESHMART</div>
-                        <div class='product-shop'>Sold by: Henry Farm</div>
+                        <div class='product-brand'>Sold by: $shopName</div>
+                        <div> In Stock : <span id='product-stock'> $row[product_stock] </span> </div>
 
                         <div class='product-rating'>";
                             while($i <= 5){
@@ -70,15 +83,15 @@
 
                         echo "</div>
 
-                        <div class='product-price'>Rs $row[product_price]/kg</div>
+                        <div class='product-price'>Rs $row[product_price]</div>
 
                         
                         <div class='product-form'>
                             <form action='' method=''>
                                    <div class='test'>
-                                        <div class='subtract' onclick='decrementValue()'> - </div>
+                                        <div class='subtract noselect' onclick='decrementValue()'> - </div>
                                         <div class='counter'><input type='number' min=1 id='quantity' value='1'></div>
-                                        <div class='addition' onclick='incrementValue()'> + </div>
+                                        <div class='addition noselect' onclick='incrementValue()'> + </div>
                                    </div>
 
 
@@ -111,7 +124,7 @@
 
                         <div id="sub-heading">Leave a comment </div>
 
-                        <form action="" method="GET">
+                        <form action="" method="POST">
                             <input type="text" name="feedback-comment" id="feedback-comment" placeholder="Leave a review">
 
                             <select name="feedback-rating" id="feedback-rating">
@@ -128,18 +141,21 @@
 
                     
                 <?php 
-                    /*  This part is for comment posting. It is not working completely fine. . */
+                    /*  
 
-                    header("Cache-Control: no cache");
-                    // session_cache_limiter("private_no_expire");
+                    This part is for comment posting. It is not working completely fine. . 
+                    
+                    */
+                    
+                    header("Cache-Control: no cache");             //This statement clears all cache so page doesnt resubmit form in case of reloading the page. 
                 
-                    if(isset($_GET['feedback-button'])){
+                    if(isset($_POST['feedback-button'])){
 
-                        $feedbackComment = filter_var(trim($_GET['feedback-comment'], FILTER_SANITIZE_SPECIAL_CHARS));
-                        $feedbackRating = $_GET['feedback-rating'];
+                        $feedbackComment = filter_var(trim($_POST['feedback-comment'], FILTER_SANITIZE_SPECIAL_CHARS));
+                        $feedbackRating = $_POST['feedback-rating'];
                         
 
-                        $feedbackPostQuery = "INSERT INTO feedback(customer_id, product_id, product_comment, product_rating) VALUES (1, 9, '$feedbackComment', $feedbackRating)";
+                        $feedbackPostQuery = "INSERT INTO feedback(feedback_active,user_id, product_id, product_comment, product_rating) VALUES (1, $currentUserId, $productToDisplay, '$feedbackComment', $feedbackRating)";
                         $feedbackPostResult = mysqli_query($connection, $feedbackPostQuery);
 
                     }
@@ -149,11 +165,10 @@
 
                     This part is shows comments of the product. Few tasks are still incomplete:
                     
-                    1. We have to fetch Customer full name. 
                     2. Check if comment_active is true or not. 
 
                     */
-                    $feedbackQuery = "SELECT f.product_comment, u.username, f.product_rating FROM feedback f INNER JOIN user u ON u.user_id = f.customer_id WHERE f.product_id = $productToDisplay";
+                    $feedbackQuery = "SELECT f.product_comment, u.user_fullname, f.product_rating FROM feedback f INNER JOIN user u ON u.user_id = f.user_id WHERE f.product_id = $productToDisplay AND f.feedback_active = 1 ";
                     $feedbackResult = mysqli_query($connection, $feedbackQuery);
                     $feedbackresultCheck = mysqli_num_rows($feedbackResult);
 
@@ -183,7 +198,7 @@
                                 </div>
 
                                 <div class='comment'> $feedbackRow[product_comment] </div>
-                                <div class='user'>- $feedbackRow[username]</div>
+                                <div class='user'>- $feedbackRow[user_fullname]</div>
                             </div>";
                         }
                     }
@@ -214,6 +229,8 @@
 
 <script>
 
+    var inStock = parseInt(document.getElementById('product-stock').innerText)
+
     function showDiv() {
         document.getElementById('sub-heading').style.display = "none";
         document.getElementById('feedback-comment').style.display = "block";
@@ -224,7 +241,17 @@
     function incrementValue(){
         var value = parseInt(document.getElementById('quantity').value, 10);
         value = isNaN(value) ? 0 : value;
-        value++;
+
+        if(inStock > 20 ){ var maxLimit = 20}
+        else{var maxLimit = inStock}
+
+        if(value === maxLimit){alert('You cannot buy more of this item at once.')}
+        if(value<maxLimit){value++}
+
+
+
+        
+
         document.getElementById('quantity').value = value;
     }
 
