@@ -268,18 +268,7 @@
                         <h6>Products List</h6>
                       </div>
                       
-                      <div class="col-md-6">
-                        <form class="search">
-                          <div class="form-row">
-                            <div class="col">
-                              <input type="text" class="form-control" placeholder="Search">
-                            </div>
-                            <div class="col-2">
-                              <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
+                     
 
                     </div>
                   </div>
@@ -288,14 +277,17 @@
                   <!-- Product -->
                   <div class="card-body">
 
-                    <table style="width:100%">
-                      <tbody>
-                        <tr>
-                          <td><b>Name</b></td>
-                          <td><b>Price</b></td>
-                          <td><b>Rating</b></td>
-                          <td><b>Shop</b></td>
-                        </tr>
+                    <table style="width:100%" id="product-table">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Rating</th>
+                            <th>Shop</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
 
                     <?php
 
@@ -340,59 +332,7 @@
                 </div>
 
                 
-                <div class="product-img">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="card">
-                        <img src="images/p2.jpg" class="card-img-top" alt="img">
-                        <div class="card-body">
-                          <a href="#" class="btn btn-primary">Top</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="card">
-                        <img src="images/p3.jpg" class="card-img-top" alt="img">
-                        <div class="card-body">
-                          <a href="#" class="btn btn-primary">New</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="card">
-                        <img src="images/p1.jpg" class="card-img-top" alt="img">
-                        <div class="card-body">
-                          <a href="#" class="btn btn-primary">Popular</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="add-more">
-                    <button type="button" class="btn btn-success" id="expander"><i class="fas fa-plus"></i></button>
-                    <div id="ex-content">
-                      <div class="card">
-                        <div class="card-body" style="text-align: left;">
-                          <div class="row">
-                            <div class="col-md-6">
-                              <h5><span>Product id:</span> Unkhown</h5>
-                              <h5><span>Products name:</span> Unkhown</h5>
-                              <h5><span>Type:</span> Unkhown</h5>
-                              <h5><span>Images:</span> Unkhown</h5>
-                              <h5><span>Quantity:</span> Unkhown</h5>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="edit">
-                                <button type="button" class="btn btn-outline-success"
-                                  style="color: #fff; padding-left: 60px; padding-right: 60px;">Edit</button>
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
 
               </div>
             </div>
@@ -402,48 +342,63 @@
               <div class="p-list">
                 <div class="card">
                   <div class="card-header">
-                    <h6>Shop Details (not required)</h6>
+                    <h6>Shop Summary</h6>
                   </div>
-                  <div class="card-body">
-                    <li>Items-1</li>
-                    <li>Items-2</li>
-                    <li>Items-3</li>
-                  </div>
+                  <?php
+                  echo '<div class="card-body">';
+
+                      $shopSummaryQuery = "SELECT COUNT(DISTINCT s.shop_id), COUNT(DISTINCT p.product_id) FROM shop s INNER JOIN product p ON s.shop_id = p.shop_id WHERE s.shop_id = p.shop_id";
+                      $shopSummaryQueryResult = mysqli_query($connection, $shopSummaryQuery);
+                      while($shopSummaryRow = mysqli_fetch_assoc($shopSummaryQueryResult)){  
+
+                        $ShopSummaryTotalShops = $shopSummaryRow['COUNT(DISTINCT s.shop_id)'];
+                        $ShopSummaryTotalProducts = $shopSummaryRow['COUNT(DISTINCT p.product_id)'];
+
+                        echo "<li> Total Number of shops: $ShopSummaryTotalShops </li>
+                              <li> Total Number of Products: $ShopSummaryTotalProducts </li>";
+                       }
+
+                  echo '</div>';
+                   ?>
                 </div>
                 <div class="views">
                   <span><a href="#">Views all</a></span>
                 </div>
                 <div class="shop">
                   <div class="card">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <?php 
+                    <?php                        
 
-                          $shopQuery = "SELECT s.shop_name, s.shop_address, s.shop_type,u.user_phone_number, u.user_fullname FROM shop s INNER JOIN user u ON s.user_id=u.user_id WHERE u.user_id=1;";
+                          $shopQuery = "SELECT s.shop_name, s.shop_address, s.shop_type FROM shop s WHERE s.user_id=2;";
           
                           $shopResult = mysqli_query($connection, $shopQuery);
-                          while($shopRow = mysqli_fetch_assoc($shopResult)){
-                      
+                          while($shopRow = mysqli_fetch_assoc($shopResult)){   
+                            echo '
+                            <div class="card-body">
+                              <div class="row">
+                                <div class="col-md-8">';
 
-                            echo "
-                              <h5><span>Shop name:</span> $shopRow[shop_name]</h5>
-                              <h5><span>Shop Address:</span> $shopRow[shop_address]</h5>
-                              <h5><span>Contact no:</span> $shopRow[user_phone_number]</h5>
-                              <h5><span>Shop owner:</span> $shopRow[user_fullname]</h5>";
+                              //I had to make count variable seperately because i couldn't print in right on line 436.
+                              // $totalProductsOfTrader = $shopRow['count(p.product_id)'];
+                              
+                              echo "
+                                <h5><span>Shop name:</span> $shopRow[shop_name]</h5>
+                                <h5><span>Shop Address:</span> $shopRow[shop_address]</h5>
+                                <h5><span>Shop Type:</span> $shopRow[shop_type]</h5>";
+
+
+
+                              echo '
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="shop-img">
+                                    <img src="images/p1.jpg" alt="img" class="img-fluid">
+                                  </div>
+                                </div>
+                              </div>
+                            </div> ';
                           }
+                    ?>
 
-                          ?>
-
-                        </div>
-                        <div class="col-md-4">
-                          <div class="shop-img">
-                            <img src="images/p1.jpg" alt="img" class="img-fluid">
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
                   </div>
 
                 </div>
@@ -499,22 +454,33 @@
                       <div class="col-md-8">
                         <?php 
 
-                        // $query =  "SELECT * FROM user WHERE user_type = 'trader';";
+                      
+                        //Fetching Trader Informations
+                        $traderInfoQuery = "SELECT DISTINCT u.user_fullname, u.user_email, u.user_phone_number, u.user_address FROM shop s INNER JOIN user u ON s.user_id = u.user_id where u.user_username='ashik12';";
+                        $traderInfoQueryResult = mysqli_query($connection, $traderInfoQuery);
 
-                        $query = "SELECT u.user_fullname, u.user_email, u.user_phone_number, u.user_address, s.shop_name FROM shop s INNER JOIN user u ON s.user_id = u.user_id where u.user_username='ashik12';";
-                        // $shop_name = mysqli_query($connection, $query2);
-                        // mysqli_close($connection);
-                        
+                        $ShopNamesquery =  "SELECT s.shop_name FROM shop s WHERE s.user_id=2";
+                        $ShopNamesqueryResult = mysqli_query($connection, $ShopNamesquery);
 
-                        $result = mysqli_query($connection, $query);
-                        while($row = mysqli_fetch_assoc($result)){
+
+                        while($traderInfoQueryRow = mysqli_fetch_assoc($traderInfoQueryResult)){
 
                           echo "
-                            <h5><span>Name:</span> $row[user_fullname]</h5>
-                            <h5><span>Contact:</span> $row[user_phone_number]</h5>
-                            <h5><span>Address:</span> $row[user_address]</h5>
-                            <h5><span>Email:</span> $row[user_email]</h5>
-                            <h5><span>Shop:</span> $row[shop_name]</h5>";
+                            <h5><span>Name:</span> $traderInfoQueryRow[user_fullname]</h5>
+                            <h5><span>Contact:</span> $traderInfoQueryRow[user_phone_number]</h5>
+                            <h5><span>Address:</span> $traderInfoQueryRow[user_address]</h5>
+                            <h5><span>Email:</span> $traderInfoQueryRow[user_email]</h5>
+                            <h5><span>Address:</span> $traderInfoQueryRow[user_address]</h5>
+                            <h5><span>Shops:</span> ";
+
+                            //Nested loop to fetch multiple shops 
+                            
+
+                            while($ShopNamesqueryRow = mysqli_fetch_assoc($ShopNamesqueryResult)){
+                              echo "$ShopNamesqueryRow[shop_name], ";
+                            }
+                            echo "</h5>";
+
                         }
 
                         ?>
@@ -555,9 +521,9 @@
         <div class="col-md-3">
           <div class="cover-f">
             <h4>ABOUT US</h4>
-            <li><a href="#">Who are we?</a></li>
-            <li><a href="#">Why us?</a></li>
-            <li><a href="#">Be a member</a></li>
+            <li><a href="blog.html">Who are we?</a></li>
+            <li><a href="blog.html">Why us?</a></li>
+            <li><a href="customer-registration.php">Be a member</a></li>
           </div>
         </div>
         <div class="col-md-3">

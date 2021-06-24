@@ -567,7 +567,7 @@
                 <div class="col-md-3">
                   <div class="cover-f">
                     <h4>MY ACCOUNT</h4>
-                    <li><a href="#">Edit my Information</a></li>
+                    <li><a href="updateProfile.php">Edit my Information</a></li>
                     <li><a href="#">My Cart</a></li>
                     <li><a href="#">Order History</a></li>
                   </div>
