@@ -37,49 +37,56 @@
           <div role="tabpanel" class="tab-pane fade active show" id="general">
             <div class="row justify-content-center">
               <div class="col-md-8  d-flex flex-column bd-highlight pt-5">
-                <form>
+                <form method='POST' action='updateProfileSuccess.php'>
                       <?php 
+
+                      //This statement clears all cache so page doesnt resubmit form in case of reloading the page. 
+                      header("Cache-Control: no cache");             
+
 
                       $profileQuery = "SELECT * FROM user WHERE user_id = 1";
                       $profileQueryResult = mysqli_query($connection, $profileQuery);
 
                       while($profileRow = mysqli_fetch_assoc($profileQueryResult)){
 
-                        $fullname = $profileRow['user_fullname'];
-                        $contact = $profileRow['user_phone_number'];
-                        $address = $profileRow['user_address'];
-                        $allergy = $profileRow['user_allergy_information'];
-
+                        $full_name = filter_var($profileRow['user_fullname'],FILTER_SANITIZE_SPECIAL_CHARS);
+                        $user_contact = filter_var($profileRow['user_phone_number'],FILTER_SANITIZE_SPECIAL_CHARS);
+                        $user_address = filter_var($profileRow['user_address'],FILTER_SANITIZE_SPECIAL_CHARS);
+                        $user_allergy = filter_var($profileRow['user_allergy_information'],FILTER_SANITIZE_SPECIAL_CHARS);
                       }
+                      
                       ?>
                       <h4 class=""> Update Information </h4>
 
                       <label for="name">Full Name:</label>
-                      <input type="name" class="form-control" value="<?php echo (isset($fullname))?$fullname:'';?>" required>
+                      <input name="fullname" type="name" class="form-control" value="<?php echo (isset($full_name))?$full_name:'';?>" required>
 
                       <label for="contact">Contact:</label>
-                      <input type="tel" class="form-control" value="<?php echo (isset($contact))?$contact:'';?>" required>
+                      <input name="contact" type="tel" class="form-control" value="<?php echo (isset($user_contact))?$user_contact:'';?>" required>
 
                       <label for="address">Address:</label>
-                      <input type="text" class="form-control" value="<?php echo (isset($address))?$address:'';?>" required>
+                      <input name="address" type="text" class="form-control" value="<?php echo (isset($user_address))?$user_address:'';?>" required>
 
-                      <label for="address">Allergy Information</label>
-                      <input type="text" class="form-control" value="<?php echo (isset($allergy))?$allergy:'';?>">
+                      <label for="allergy-info">Allergy Information</label>
+                      <input name="allergy" type="text" class="form-control" value="<?php echo (isset($user_allergy))?$user_allergy:'';?>">
 
                       <h4 class="heading"> Change Password </h4>
 
                       <label for="password">Old Password:</label>
-                      <input type="password" class="form-control" required>
+                      <input name="old-pass" type="password" class="form-control">
 
                       <label for="password">New Password:</label>
-                      <input type="password" id="password" class="form-control" required>
+                      <input name="new-pass" type="password" id="password" class="form-control">
 
                       <label for="password">Re-enter Password:</label>
-                      <input type="password" id="password" value ="" class="form-control" required> <br>
+                      <input name="re-pass" type="password" id="password" class="form-control"> <br>
 
                       <input type="submit" name="save" value="Save">
                       <input type="submit" name="discard" value="Discard">
                 </form>
+
+                
+
               </div>
               <div class=" col-md-4  d-flex flex-column bd-highlight mb-3">
                 <img src="images/veg2.jpg" alt="...">

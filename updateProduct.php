@@ -44,25 +44,25 @@
 
                   while($productRow = mysqli_fetch_assoc($productQueryResult)){
 
-                    $name = $productRow['product_name'];
-                    $price = $productRow['product_price'];
-                    $description = $productRow['product_description'];
-                    $allergy = $productRow['product_allergy'];
-                    $stock = $productRow['product_stock'];
+                    $product_name = $productRow['product_name'];
+                    $product_price = $productRow['product_price'];
+                    $product_description = $productRow['product_description'];
+                    $product_allergy = $productRow['product_allergy'];
+                    $product_stock = $productRow['product_stock'];
 
                   }
                 ?>
 
 
-                <form action=" ">
+                <form action="updateProductSuccess.php" method="POST">
                     
                     <label for="Name">Product Name:</label>
-                    <input type="text" class="form-control"  value="<?php echo (isset($name))?$name:'';?>" required>
+                    <input name="name" type="text" class="form-control"  value="<?php echo (isset($product_name))?$product_name:'';?>" max=30 required>
 
-                    <Label for="type">Product Type:</Label>
-                    <select name="trader_type" class="form-control" required>
+                    <Label for="type">Product Category:</Label>
+                    <select name="product-type" class="form-control" required>
 
-                      <option value="null" selected disabled>Trader Type</option>
+                      <option value="null" selected disabled>-</option>
                       <option value="Greengrocer"> Greengrocer </option>
                       <option value="Butcher"> Butcher </option>
                       <option value="Fishmonger"> Fishmonger </option>
@@ -71,16 +71,16 @@
                     </select><br>
 
                     <label for="Price">Price:</label>
-                    <input type="number" class="form-control"  value="<?php echo (isset($price))?$price:'';?>" required>
+                    <input name="price" type="number" class="form-control"  value="<?php echo (isset($product_price))?$product_price:'';?>" required>
 
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" class="form-control"  value="<?php echo (isset($stock))?$stock:'';?>" max=20 required>
+                    <label for="quantity">Product Stock:</label>
+                    <input name="stock" type="number" class="form-control"  value="<?php echo (isset($product_stock))?$product_stock:'';?>" required>
 
-                    <label for="quantity">Description:</label>
-                    <input type="number" class="form-control"  value="<?php echo (isset($description))?$description:'';?>" max=20 required>
+                    <label for="description">Description:</label>
+                    <input name="description" type="text" class="form-control"  value="<?php echo (isset($product_description))?$product_description:'';?>" max=150 required>
 
-                    <label for="quantity">Allergy Information:</label>
-                    <input type="number" class="form-control"  value="<?php echo (isset($allergy))?$allergy:'';?>" max=20 required>
+                    <label for="allergy">Allergy Information:</label>
+                    <input name="allergy" type="text" class="form-control"  value="<?php echo (isset($product_allergy))?$product_allergy:'';?>" max=30>
   
                     <input type="submit" name="save" value="Save">
                     <input type="submit" name="discard" value="Discard">
