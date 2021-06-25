@@ -35,9 +35,9 @@
                         <div class="box box2">
                             <span class="text-gray-small"> SORT BY </span><br>
                             <select name="sort" class="sidemenu-dropdown">
-                                <option value="product_price">Price</option>
-                                <option value="product_rating">Rating</option>
-                                <option value="product_name">Alphabetical</option>
+                                <option value="PRODUCT_PRICE">Price</option>
+                                <option value="PRODUCT_RATING">Rating</option>
+                                <option value="PRODUCT_NAME">Alphabetical</option>
                             </select>
                         </div>
 
@@ -77,21 +77,21 @@
 
                 <?php 
                     
-                    include 'reuseable/connection.php';
+                    include 'reusable/connection.php';
 
-                    $query = "SELECT * FROM product";
+                    $query = "SELECT * FROM PRODUCT;";
 
 
                     //Checks if searchQuery is pressed from homepage and sidemenu button is not pressed yet.
-                    if(isset($_GET['product-name']) && !isset($_POST['product-search'])){
-                        $homepageSearchQuery = $_GET['product-name'];
-                        $query = "SELECT * FROM product WHERE product_name LIKE '%$homepageSearchQuery%';";
+                    if(isset($_GET['navbar-search-query']) && !isset($_POST['product-search'])){
+                        $homepageSearchQuery = $_GET['navbar-search-query'];
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$homepageSearchQuery%';";
                     }
 
                     //Checks if Category is selected from homepage and sidemenu button is not pressed yet.
                     elseif(isset($_GET['category']) && !isset($_POST['product-search'])){
                         $categorySelected = $_GET['category'];
-                        $query = "SELECT * FROM product WHERE product_name LIKE '%$categorySelected%';";
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$categorySelected%';";
                     }
 
                     //Checks if sidemenu button is pressed.
@@ -106,46 +106,46 @@
 
                         $searchText = filter_var(trim($searchText), FILTER_SANITIZE_SPECIAL_CHARS);
 
-                        $query = "SELECT * FROM product";
+                        $query = "SELECT * FROM PRODUCT";
                         
                         //EMPTY, EMPTY , EMPTY
                         if(empty($searchText) && empty($minPrice) && empty($maxPrice) ){
-                            $query = "SELECT * FROM product WHERE product_rating >= $rating ORDER BY $sort $order;";
+                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_RATING >= $rating ORDER BY $sort $order;";
                         }
 
                         //EMPTY, EMPTY, NOT EMPTY
                         elseif(empty($searchText) && empty($minPrice) && !empty($maxPrice)){
-                            $query = "SELECT * FROM product WHERE product_price BETWEEN 0 AND $maxPrice && product_rating >= $rating ORDER BY $sort $order;";
+                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_PRICE BETWEEN 0 AND $maxPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
                         }
 
                         //EMPTY, NOT EMPTY, EMPTY
                         elseif(empty($searchText) && !empty($minPrice) && empty($maxPrice)){
-                            $query = "SELECT * FROM product WHERE product_price >= $minPrice && product_rating >= $rating ORDER BY $sort $order;";
+                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_PRICE >= $minPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
                         }
 
                         //EMPTY, NOT EMPTY, NOT EMPTY
                         elseif(empty($searchText) && !empty($minPrice) && !empty($maxPrice)){
-                            $query = "SELECT * FROM product WHERE product_rating >= $rating && product_price BETWEEN $minPrice AND $maxPrice  ORDER BY $sort $order;";
+                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_RATING >= $rating && PRODUCT_PRICE BETWEEN $minPrice AND $maxPrice  ORDER BY $sort $order;";
                         }
 
                         //NOT EMPTY , EMPTY , EMPTY
                         elseif(!empty($searchText) && empty($minPrice) && empty($maxPrice)){
-                            $query = "SELECT * FROM product WHERE product_name LIKE '%$searchText%' && product_rating >= $rating ORDER BY $sort $order;";
+                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
                         }
                         
                         //NOT EMPTY, EMPTY, NOT EMPTY
                         elseif(!empty($searchText) && empty($minPrice) && !empty($maxPrice)){
-                            $query = "SELECT * FROM product WHERE product_name LIKE '%$searchText%' && product_price BETWEEN 0 AND $maxPrice && product_rating >= $rating ORDER BY $sort $order;";
+                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' && PRODUCT_PRICE BETWEEN 0 AND $maxPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
                         }
 
                         //NOT EMPTY, NOT EMPTY, EMPTY
                         elseif(!empty($searchText) && !empty($minPrice) && empty($maxPrice)){
-                            $query = "SELECT * FROM product WHERE product_name LIKE '%$searchText%' && product_price >= $minPrice && product_rating >= $rating ORDER BY $sort $order;";
+                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' && PRODUCT_PRICE >= $minPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
                         }
 
                         //NOT EMPTY, NOT EMPTY, NOT EMPTY
                         elseif(!empty($searchText) && !empty($minPrice) && !empty($maxPrice)){
-                            $query = "SELECT * FROM product WHERE product_name LIKE '%$searchText%' && product_price BETWEEN $minPrice AND $maxPrice && product_rating >= $rating ORDER BY $sort $order;";
+                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' && PRODUCT_PRICE BETWEEN $minPrice AND $maxPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
                         }
 
                         else{
@@ -158,31 +158,30 @@
                     }
 
                     
+                    echo $query;
+                    $result = oci_parse($connection, $query);
+                    $result = oci_execute($result); 
 
-
-                    $result = mysqli_query($connection, $query);
-                    $resultCheck = mysqli_num_rows($result);
-
-                    if($resultCheck > 0){
-                        while($row = mysqli_fetch_assoc($result)){
+                    if($result){
+                        while($row = oci_fetch_array($result)){
                             
                             $i = 1; 
-                            $rating = round($row['product_rating']);
+                            $rating = round($row['PRODUCT_RATING']);
 
                             echo "
                             <!-- INDIVIDUAL PRODUCT -->
                             
                             <div class='individual-card'>
-                                <a href='individualProduct.php?productID=$row[product_id]'>
-                                <img class='card-top-img' src='images/$row[product_image]'>
+                                <a href='individualProduct.php?productID=$row[PK_PRODUCT_ID]'>
+                                <img class='card-top-img' src='images/$row[PRODUCT_IMAGE]'>
                                 <div class='card-bottom'>
                                 
-                                    <p>$row[product_name]</p> </a>
+                                    <p>$row[PRODUCT_NAME]</p> </a>
 
                                     <div>"; 
 
                                     while($i <= 5){
-                                        if( $i<=round($row['product_rating'])){
+                                        if( $i<=round($row['PRODUCT_RATING'])){
                                             echo "<span class='fa fa-star checked'></span>";
                                             $i = $i +1;
                                         }
@@ -195,7 +194,7 @@
                                     
                                     echo "</div>
 
-                                    <h5>$row[product_price]</h5>
+                                    <h5>$row[PRODUCT_PRICE]</h5>
                                     <input type='submit' value='Add To Cart' style='margin-top: auto; background-color:rgb(129, 192, 34); color:white;' class='submit'>
                                 </div>
                             </div>  
@@ -203,6 +202,10 @@
                             <!-- INDIVIDUAL PRODUCT END -->";
 
                         }
+                    }
+
+                    else{
+                        echo "Unable to find any products.";
                     }
                     
                 ?>
