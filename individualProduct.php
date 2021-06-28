@@ -17,16 +17,16 @@
 
 <body>
 
+ <!-- NAVBAR STARTS HERE -->
+ <div class="navbar-container">
+        <?php include 'reusable/new_customer_header.php'; ?>
+</div>
+
 <div class="container-fluid">
-
-  <!-- NAVBAR STARTS HERE -->
-    <div class="navbar-container">
-         <a href="index.php">NAVBAR GOES HERE</a>
-    </div>
-
     <?php 
 
-        include 'reuseable/connection.php';
+        include 'reusable/connection.php';
+
 
         //This piece of code retrieves Product ID from the URL.
         $productToDisplay = $_GET['productID'];
@@ -35,38 +35,44 @@
         $currentUserId = 1;
 
         //Get shop name of this product_id
-        $shopQuery = "SELECT s.shop_name FROM shop s INNER JOIN product p ON s.shop_id = p.shop_id WHERE p.product_id = $productToDisplay";
-        $shopQueryResult = mysqli_query($connection, $shopQuery);
+        $shopQuery = "SELECT S.SHOP_NAME FROM SHOP S INNER JOIN PRODUCT P ON S.PK_SHOP_ID = P.FK1_SHOP_ID WHERE P.PK_PRODUCT_ID = $productToDisplay";
+        $shopQueryResult=  oci_parse($connection,$shopQuery); 
+        oci_execute($shopQueryResult); 
 
-        while($shopRow = mysqli_fetch_assoc($shopQueryResult)){
-            $shopName = $shopRow['shop_name'];
+
+        while($shopRow = oci_fetch_assoc($shopQueryResult)){
+            $shopName = $shopRow['SHOP_NAME'];
         }
 
 
         //Getting other details of product from product table.
-        $sql_query = "SELECT * FROM product WHERE product_id = $productToDisplay";
-        $result = mysqli_query($connection, $sql_query);
-        $resultCheck = mysqli_num_rows($result);
+        $sql_query = "SELECT * FROM PRODUCT WHERE PK_PRODUCT_ID = $productToDisplay";
+        $result=  oci_parse($connection,$sql_query); 
+        oci_execute($result); 
+
+        $resultCheck = oci_num_fields($result);
+
+
 
         if($resultCheck > 0){
 
-            while($row = mysqli_fetch_assoc($result)){
+            while($row = oci_fetch_assoc($result)){
 
-                $rating = round($row['product_rating']);
+                $rating = round($row['PRODUCT_RATING']);
                 $i = 1; 
 
                 echo "
                 <!-- Product Information starts here -->
                 <div class='product-container'>
                     <div class='product-image-container'>
-                        <img src='images/$row[product_image]'/>
+                        <img src='images/$row[PRODUCT_IMAGE]'/>
                     </div>
                 
 
                     <div class='product-info-container'>
-                        <div class='product-heading'>$row[product_name]</div>
+                        <div class='product-heading'>$row[PRODUCT_NAME]</div>
                         <div class='product-brand'>Sold by: $shopName</div>
-                        <div> In Stock : <span id='product-stock'> $row[product_stock] </span> </div>
+                        <div> In Stock : <span id='product-stock'> $row[PRODUCT_QUANTITY] </span> </div>
 
                         <div class='product-rating'>";
                             while($i <= 5){
@@ -83,20 +89,21 @@
 
                         echo "</div>
 
-                        <div class='product-price'>Rs $row[product_price]</div>
+                        <div class='product-price'>Rs $row[PRODUCT_PRICE]</div>
 
                         
                         <div class='product-form'>
-                            <form action='' method=''>
+
+                            <form action='cart/cart-work.php' method='POST'>
                                    <div class='test'>
                                         <div class='subtract noselect' onclick='decrementValue()'> - </div>
-                                        <div class='counter'><input type='number' min=1 id='quantity' value='1'></div>
+                                        <div class='counter'><input type='number' name='quantity' min=1 id='quantity' value='1'></div>
                                         <div class='addition noselect' onclick='incrementValue()'> + </div>
                                    </div>
-
-
-                                    <input type='submit' class='add-to-cart-button' value='Add to Cart'>
+                                   <input type='hidden' name='productid' value='$row[PK_PRODUCT_ID]'>
+                                   <input type='submit' name='submit' class='add-to-cart-button' value='Add to Cart'>
                             </form>
+
                         </div>
 
                         <div class='product-rate-prompt'>Rate this product</div>
@@ -109,10 +116,14 @@
 
                 <div class='product-description'>
                     <h4>Product Description</h4>
-                    <p>$row[product_description]</p>
+                    <p>$row[PRODUCT_DESCRIPTION]</p>
                 </div>";
             }
         
+        }
+
+        else{
+            echo "Product with $productToDisplay ID doesn't exist.";
         }
     ?>
 
@@ -143,7 +154,7 @@
                 <?php 
                     /*  
 
-                    This part is for comment posting. It is not working completely fine. . 
+                    This part is for comment posting. . 
                     
                     */
                     
@@ -155,8 +166,9 @@
                         $feedbackRating = $_POST['feedback-rating'];
                         
 
-                        $feedbackPostQuery = "INSERT INTO feedback(feedback_active,user_id, product_id, product_comment, product_rating) VALUES (1, $currentUserId, $productToDisplay, '$feedbackComment', $feedbackRating)";
-                        $feedbackPostResult = mysqli_query($connection, $feedbackPostQuery);
+                        $feedbackPostQuery = "INSERT INTO FEEDBACK(PK_FEEDBACK_ID,FEEDBACK_ACTIVE,FK1_PRODUCT_ID,FK2_USER_ID,PRODUCT_COMMENT,PRODUCT_RATING) VALUES (FEEDBACK_ID_SEQ.NEXTVAL, 'Y', $productToDisplay, $currentUserId, '$feedbackComment', $feedbackRating )";
+                        $feedbackPostResult=  oci_parse($connection, $feedbackPostQuery); 
+                        oci_execute($feedbackPostResult); 
 
                     }
 
@@ -168,15 +180,17 @@
                     2. Check if comment_active is true or not. 
 
                     */
-                    $feedbackQuery = "SELECT f.product_comment, u.user_fullname, f.product_rating FROM feedback f INNER JOIN user u ON u.user_id = f.user_id WHERE f.product_id = $productToDisplay AND f.feedback_active = 1 ";
-                    $feedbackResult = mysqli_query($connection, $feedbackQuery);
-                    $feedbackresultCheck = mysqli_num_rows($feedbackResult);
+                    $feedbackQuery = "SELECT F.PRODUCT_COMMENT, U.USER_FULLNAME, F.PRODUCT_RATING FROM FEEDBACK F INNER JOIN SITE_USER U ON U.PK_USER_ID = F.FK2_USER_ID WHERE F.FK1_PRODUCT_ID = $productToDisplay AND F.FEEDBACK_ACTIVE = 'Y'";
+                    $feedbackResult=  oci_parse($connection,$feedbackQuery); 
+                    oci_execute($feedbackResult); 
+ 
+                    $feedbackresultCheck = oci_num_fields($feedbackResult);
 
                     if($feedbackresultCheck > 0){
 
-                        while($feedbackRow = mysqli_fetch_assoc($feedbackResult)){
+                        while($feedbackRow = oci_fetch_assoc($feedbackResult)){
 
-                            $commentRating = $feedbackRow['product_rating'];
+                            $commentRating = $feedbackRow['PRODUCT_RATING'];
                             $i = 1;
 
                             echo "
@@ -197,13 +211,14 @@
                                 echo "
                                 </div>
 
-                                <div class='comment'> $feedbackRow[product_comment] </div>
-                                <div class='user'>- $feedbackRow[user_fullname]</div>
+                                <div class='comment'> $feedbackRow[PRODUCT_COMMENT] </div>
+                                <div class='user'>- $feedbackRow[USER_FULLNAME]</div>
                             </div>";
                         }
                     }
+
                     else{
-                        echo "<p>No comments found on this product. Be the first to write.</p>";
+                        echo "<p> No comments found on this product. Be the first to write.</p>";
                     }
 
                 ?>
@@ -222,7 +237,7 @@
 </div>  
 
 <div class="footer">
-    Place footer here
+    <?php include 'reusable/footer_customer.php'; ?>
 </div>
 
 

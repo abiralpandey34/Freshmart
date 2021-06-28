@@ -15,13 +15,16 @@
 
 <body>
 
+    <div class="navbar-container">
+        <?php include 'reusable/new_customer_header.php'; ?>
+    </div>
 
     <div class="container">
-
+    
         <div class="section-container"> 
 
             <!-- Sidemenu-container starts here -->
-            <form action="" method="POST">
+            <form action="" method="GET">
                 <div class="sidemenu-container">
                         <div class="box box0">
                             <h2>Product Filter</h2>
@@ -29,15 +32,15 @@
 
                         <div class="box box1 ">
                             <span class="text-gray-small"> SEARCH HERE </span><br>
-                            <input type="text" name="searchQuery" placeholder="Search Query" class="w-all">
+                            <input type="text" name="searchQuery" placeholder="Search Query" class="w-all"> 
                         </div>
 
                         <div class="box box2">
                             <span class="text-gray-small"> SORT BY </span><br>
                             <select name="sort" class="sidemenu-dropdown">
-                                <option value="PRODUCT_PRICE">Price</option>
-                                <option value="PRODUCT_RATING">Rating</option>
-                                <option value="PRODUCT_NAME">Alphabetical</option>
+                                <option value="product_price">Price</option>
+                                <option value="product_rating">Rating</option>
+                                <option value="product_name">Alphabetical</option>
                             </select>
                         </div>
 
@@ -75,147 +78,142 @@
             <!-- Product container starts here -->
             <div class="product-container">
 
-                <?php 
+            <?php
+
+                include 'reusable/connection.php';
+
+                if(isset($_GET['searchQuery']) && !isset($_GET['product-search'])){
+                    $homepageSearchQuery= filter_var($_GET['searchQuery'], FILTER_SANITIZE_SPECIAL_CHARS);
+                    $homepageSearchQuery=strtoupper($homepageSearchQuery);
+                    $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$homepageSearchQuery%'";
+                }
+
+                //Checks if Category is selected from homepage and sidemenu button is not pressed yet.
+                elseif(isset($_GET['category']) && !isset($_GET['product-search'])){
+                    $categorySelected = $_GET['category'];
+                    $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$categorySelected%'";
+                }
+
+
+                elseif(isset($_GET['product-search'])){
+                    $sort = $_GET['sort'];
+                    $order = $_GET['order'];
+                    $minPrice = $_GET['min-price'];
+                    $maxPrice = $_GET['max-price'];
+                    $rating = $_GET['rating'];
+                    $searchText = filter_var($_GET['searchQuery'], FILTER_SANITIZE_SPECIAL_CHARS);
+                    $searchText=strtoupper($searchText);
+                    $query = "SELECT * FROM PRODUCT";
+                                    
                     
-                    include 'reusable/connection.php';
-
-                    $query = "SELECT * FROM PRODUCT;";
-
-
-                    //Checks if searchQuery is pressed from homepage and sidemenu button is not pressed yet.
-                    if(isset($_GET['navbar-search-query']) && !isset($_POST['product-search'])){
-                        $homepageSearchQuery = $_GET['navbar-search-query'];
-                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$homepageSearchQuery%';";
+                    //EMPTY, EMPTY , EMPTY
+                    if(empty($searchText) && empty($minPrice) && empty($maxPrice) ){
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_RATING >= $rating ORDER BY $sort $order";
                     }
 
-                    //Checks if Category is selected from homepage and sidemenu button is not pressed yet.
-                    elseif(isset($_GET['category']) && !isset($_POST['product-search'])){
-                        $categorySelected = $_GET['category'];
-                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$categorySelected%';";
+                    //EMPTY, EMPTY, NOT EMPTY
+                    elseif(empty($searchText) && empty($minPrice) && !empty($maxPrice)){
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_PRICE BETWEEN 0 AND $maxPrice AND PRODUCT_RATING >= $rating ORDER BY $sort $order";
                     }
-
-                    //Checks if sidemenu button is pressed.
-                    elseif(isset($_POST['product-search'])){
-
-                        $searchText = $_POST['searchQuery'];
-                        $sort = $_POST['sort'];
-                        $order = $_POST['order'];
-                        $minPrice = $_POST['min-price'];
-                        $maxPrice = $_POST['max-price'];
-                        $rating = $_POST['rating'];
-
-                        $searchText = filter_var(trim($searchText), FILTER_SANITIZE_SPECIAL_CHARS);
-
-                        $query = "SELECT * FROM PRODUCT";
+                    //EMPTY, NOT EMPTY, EMPTY
+                    elseif(empty($searchText) && !empty($minPrice) && empty($maxPrice)){
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_PRICE >= $minPrice AND PRODUCT_RATING >= $rating ORDER BY $sort $order";
+                    }
+                    //EMPTY, NOT EMPTY, NOT EMPTY
+                    elseif(empty($searchText) && !empty($minPrice) && !empty($maxPrice)){
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_RATING >= $rating AND PRODUCT_PRICE BETWEEN $minPrice AND $maxPrice  ORDER BY $sort $order";
+                    }
+                    //NOT EMPTY , EMPTY , EMPTY
+                    elseif(!empty($searchText) && empty($minPrice) && empty($maxPrice)){
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' AND PRODUCT_RATING >= $rating ORDER BY $sort $order";
                         
-                        //EMPTY, EMPTY , EMPTY
-                        if(empty($searchText) && empty($minPrice) && empty($maxPrice) ){
-                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_RATING >= $rating ORDER BY $sort $order;";
-                        }
-
-                        //EMPTY, EMPTY, NOT EMPTY
-                        elseif(empty($searchText) && empty($minPrice) && !empty($maxPrice)){
-                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_PRICE BETWEEN 0 AND $maxPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
-                        }
-
-                        //EMPTY, NOT EMPTY, EMPTY
-                        elseif(empty($searchText) && !empty($minPrice) && empty($maxPrice)){
-                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_PRICE >= $minPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
-                        }
-
-                        //EMPTY, NOT EMPTY, NOT EMPTY
-                        elseif(empty($searchText) && !empty($minPrice) && !empty($maxPrice)){
-                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_RATING >= $rating && PRODUCT_PRICE BETWEEN $minPrice AND $maxPrice  ORDER BY $sort $order;";
-                        }
-
-                        //NOT EMPTY , EMPTY , EMPTY
-                        elseif(!empty($searchText) && empty($minPrice) && empty($maxPrice)){
-                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
-                        }
-                        
-                        //NOT EMPTY, EMPTY, NOT EMPTY
-                        elseif(!empty($searchText) && empty($minPrice) && !empty($maxPrice)){
-                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' && PRODUCT_PRICE BETWEEN 0 AND $maxPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
-                        }
-
-                        //NOT EMPTY, NOT EMPTY, EMPTY
-                        elseif(!empty($searchText) && !empty($minPrice) && empty($maxPrice)){
-                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' && PRODUCT_PRICE >= $minPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
-                        }
-
-                        //NOT EMPTY, NOT EMPTY, NOT EMPTY
-                        elseif(!empty($searchText) && !empty($minPrice) && !empty($maxPrice)){
-                            $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' && PRODUCT_PRICE BETWEEN $minPrice AND $maxPrice && PRODUCT_RATING >= $rating ORDER BY $sort $order;";
-                        }
-
-                        else{
-                           echo 'Something error occured. Please try again.';
-                        }
                     }
-                    
-                    else{
+                    //NOT EMPTY, EMPTY, NOT EMPTY
+                    elseif(!empty($searchText) && empty($minPrice) && !empty($maxPrice)){
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' AND PRODUCT_PRICE BETWEEN 0 AND $maxPrice AND PRODUCT_RATING >= $rating ORDER BY $sort $order";
                         
                     }
 
-                    
-                    echo $query;
-                    $result = oci_parse($connection, $query);
-                    $result = oci_execute($result); 
+                    //NOT EMPTY, NOT EMPTY, EMPTY
+                    elseif(!empty($searchText) && !empty($minPrice) && empty($maxPrice)){
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' AND PRODUCT_PRICE >= $minPrice AND PRODUCT_RATING >= $rating ORDER BY $sort $order";
+                        
+                    }
+                    //NOT EMPTY, NOT EMPTY, NOT EMPTY
+                    elseif(!empty($searchText) && !empty($minPrice) && !empty($maxPrice)){
+                        $query = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE '%$searchText%' AND PRODUCT_PRICE BETWEEN $minPrice AND $maxPrice AND PRODUCT_RATING >= $rating ORDER BY $sort $order";
 
-                    if($result){
-                        while($row = oci_fetch_array($result)){
-                            
+                    }
+
+                    
+                }
+
+                $result = oci_parse($connection, $query);
+                        if (!$result) 
+                        {
+                        $error = oci_error($connection);    
+                        trigger_error('Could not parse statement: '. $error['message'], E_USER_ERROR); 
+                        }
+                        $run = oci_execute($result); 
+                        if(!$run) 
+                        {    
+                        $error = oci_error($result);
+                            trigger_error('Could not execute statement:'. $error['message'], E_USER_ERROR); 
+                        }
+
+                        while($row = oci_fetch_array($result)){   
                             $i = 1; 
                             $rating = round($row['PRODUCT_RATING']);
-
                             echo "
                             <!-- INDIVIDUAL PRODUCT -->
                             
-                            <div class='individual-card'>
-                                <a href='individualProduct.php?productID=$row[PK_PRODUCT_ID]'>
-                                <img class='card-top-img' src='images/$row[PRODUCT_IMAGE]'>
-                                <div class='card-bottom'>
-                                
-                                    <p>$row[PRODUCT_NAME]</p> </a>
-
-                                    <div>"; 
-
-                                    while($i <= 5){
-                                        if( $i<=round($row['PRODUCT_RATING'])){
-                                            echo "<span class='fa fa-star checked'></span>";
-                                            $i = $i +1;
-                                        }
-    
-                                        else{                                
-                                           echo "<span class='fa fa-star unchecked'></span>";
-                                            $i = $i +1;
-                                        }
-                                    }
+                                <div class='individual-card'>
+                                    <a href='individualProduct.php?productID=$row[PK_PRODUCT_ID]'>
+                                    <img class='card-top-img' src='images/$row[PRODUCT_IMAGE]'>
+                                    <div class='card-bottom'>
                                     
-                                    echo "</div>
+                                        <p>$row[PRODUCT_NAME]</p> </a>
 
-                                    <h5>$row[PRODUCT_PRICE]</h5>
-                                    <input type='submit' value='Add To Cart' style='margin-top: auto; background-color:rgb(129, 192, 34); color:white;' class='submit'>
-                                </div>
-                            </div>  
+                                        <div>"; 
+
+                                        while($i <= 5){
+                                            if( $i<=round($row['PRODUCT_RATING'])){
+                                                echo "<span class='fa fa-star checked'></span>";
+                                                $i = $i +1;
+                                            }
+
+                                            else{                                
+                                            echo "<span class='fa fa-star unchecked'></span>";
+                                                $i = $i +1;
+                                            }
+                                        }
+                                        
+                                        echo "</div>
+
+                                        <h5>$row[PRODUCT_PRICE]</h5>
+                                        <a href='cart/cart-work.php?productid=$row[PK_PRODUCT_ID]'> <input type='submit' value='Add To Cart' style='margin-top: auto; background-color:rgb(129, 192, 34); color:white;' class='submit'> </a>
+                                    </div>
+                                </div>  
                             
                             <!-- INDIVIDUAL PRODUCT END -->";
 
                         }
-                    }
+                        ?>
 
-                    else{
-                        echo "Unable to find any products.";
-                    }
-                    
-                ?>
+    
            
 
             </div><!-- Product container ends here -->
 
         </div> <!--Section container ends here-->
 
+
+
     </div>
+
+    <div class="footer">
+            <?php include 'reusable/footer_customer.php'; ?>
+        </div>
 
 
 <script>
