@@ -1,32 +1,73 @@
-<?php 
+<?php
 
-include 'reuseable/connection.php';
+    session_start();
+    echo "<h3> PHP List All Session Variables</h3>";
+    foreach ($_SESSION as $key=>$val)
+    echo $key." ".$val."<br/>";
 
-                      
-//Fetching Trader Informations
-$traderInfoQuery = "SELECT DISTINCT u.user_fullname, u.user_email, u.user_phone_number, u.user_address FROM shop s INNER JOIN user u ON s.user_id = u.user_id where u.user_username='ashik12'";
-$traderInfoQueryResult = mysqli_query($connection, $traderInfoQuery);
+    date_default_timezone_set('Asia/Kathmandu');
 
-$ShopNamesquery =  "SELECT s.shop_name FROM shop s WHERE u.user_username='ashik12'";
-$ShopNamesqueryResult = mysqli_query($connection, $ShopNamesquery);
+    echo '<br><br>';
+
+    echo 'this cart is : '. empty($_SESSION['currentActiveCart']) .'<br>';
 
 
-while($traderInfoQueryRow = mysqli_fetch_assoc($traderInfoQueryResult)){
+    //Tomorrow's timestamp
 
-  echo "
-    <h5><span>Name:</span> $traderInfoQueryRow[user_fullname]</h5>
-    <h5><span>Contact:</span> $traderInfoQueryRow[user_phone_number]</h5>
-    <h5><span>Address:</span> $traderInfoQueryRow[user_address]</h5>
-    <h5><span>Email:</span> $traderInfoQueryRow[user_email]</h5>
-    <h5><span>Address:</span> $traderInfoQueryRow[user_address]</h5>";
+    //Print it out
+    $selectedDayDate =  date("Y-m-d", strtotime("WEDNESday"));
+    echo 'wednesday date is: '.$selectedDayDate.'<br>';
 
-    //Nested loop to fetch multiple shops 
-    
 
-    while($ShopNamesqueryRow = mysqli_fetch_assoc($ShopNamesqueryResult)){
-      echo "<h5><span>Shops:</span> $ShopNamesqueryRow[shop_name]</h5>";
+
+
+    $user_id = $_SESSION['user_id'];
+    if($user_id == ''){
+        echo 'this';
     }
 
-}
+    echo 'the user is :'.isset($_SESSION['user_id']);
+
+
+
+    // $date = date("Y-m-d h:i:s");
+    // $_SESSION['currentTraderId'] = 1;
+
+    $day = date('w');
+    $week_start = date('m-d-Y', strtotime('-'.$day.' days'));
+    $week_end = date('m-d-Y', strtotime('+'.(6-$day).' days'));
+
+
+    echo 'week start :'.$week_start.'<br><br>';
+    echo 'week end :'.$week_end.'<br><br>';
+
+
+
+    // unset($_SESSION['currentTraderId']);
+
+    echo '<br><br>the trader currently is '. $_SESSION['currentTraderId'];
+
+    // echo !empty($_SESSION['currentTraderId']);
+
+
+
+    // $count = 0;
+    // $total = 0;
+
+
+    //    unset($_SESSION['currentCart']);
+    //    unset($_SESSION['guestCurrentCart']);
+
+ 
+    // for($i=0;$i<sizeof($_SESSION['guestCurrentCart']);$i++){
+    //     foreach($_SESSION['guestCurrentCart'][$i] as $cartProductId=>$cartProductQuantity){
+    //         if($cartProductId==2){
+    //             array_splice($_SESSION['guestCurrentCart'],$i,1);
+    //         }
+    //     }
+    // }
+
+        
 
 ?>
+

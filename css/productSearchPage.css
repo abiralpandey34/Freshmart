@@ -25,8 +25,8 @@
 }
 
 .section-container {
-  width: 90%;
-  margin: auto;
+  width: 100%;
+  margin: 40px 0px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -59,6 +59,7 @@
   -webkit-box-flex: 2;
       -ms-flex: 2;
           flex: 2;
+  width: 300px;
   display: -ms-grid;
   display: grid;
   gap: 0.5em;
@@ -71,6 +72,7 @@
 
 @media only screen and (max-width: 800px) {
   .section-container .sidemenu-container {
+    width: auto;
     -ms-grid-columns: (minmax(200px, 1fr))[auto-fit];
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
@@ -119,7 +121,7 @@
   padding: 0.5em;
   margin: 0.5em;
   width: 16rem;
-  height: 23em;
+  height: 25em;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
   -webkit-transition: 0.1s ease-in;
@@ -143,6 +145,8 @@
       -ms-flex: 6;
           flex: 6;
   width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .section-container .product-container .individual-card .card-bottom {
@@ -156,6 +160,28 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+}
+
+.section-container .product-container .individual-card .card-bottom .product-stock-success {
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: white;
+  background-color: #6bd650;
+  display: inline-block;
+  padding: 0px 4px;
+  border-radius: 3px;
+}
+
+.section-container .product-container .individual-card .card-bottom .product-stock-fail {
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: white;
+  background-color: #d32323;
+  display: inline-block;
+  padding: 0px 4px;
+  border-radius: 3px;
 }
 
 .section-container .product-container .individual-card .card-bottom p, .section-container .product-container .individual-card .card-bottom h5, .section-container .product-container .individual-card .card-bottom input {
@@ -178,5 +204,15 @@
   width: 15rem;
   -o-object-fit: contain;
      object-fit: contain;
+}
+
+#error-box {
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #e64545;
+  color: white;
+  font-weight: 500;
+  text-align: center;
 }
 /*# sourceMappingURL=productSearchPage.css.map */

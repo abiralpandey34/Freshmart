@@ -1,3 +1,4 @@
+<?php include '../reusable/errorReporting.php'?>
 
 <?php 
     include '../reusable/connection.php';

@@ -20,7 +20,7 @@
 
 
 //Declaring colors for all projects
-$primary-color: rgb(129, 192, 34);
+$primary-color: rgb(126, 189, 31);
 $dark-color : #333;
 $light-gray: rgb(206, 206, 206);
 
@@ -40,22 +40,10 @@ $light-gray: rgb(206, 206, 206);
 $primary-color:rgb(107, 214, 80);
 $light-gray:rgb(219, 219, 219);
 
-
-// Navbar-container
-
-.navbar-container{
-    
-}
-
-
-
-
-
-
 // Section Start here
 .section-container{
-    width: 90%;
-    margin: auto;
+    width: 100%;
+    margin: 40px 0px;
 
     display: flex;
     flex-direction: row;
@@ -72,6 +60,7 @@ $light-gray:rgb(219, 219, 219);
 
     .sidemenu-container{
         flex:2;
+        width:300px;
 
         display: grid;
         gap: 0.5em;
@@ -82,6 +71,7 @@ $light-gray:rgb(219, 219, 219);
 
         //Media Query for Sidemenu-container
         @media only screen and (max-width: 800px) {
+            width:auto;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       }
 
@@ -122,7 +112,7 @@ $light-gray:rgb(219, 219, 219);
             padding: 0.5em;
             margin: 0.5em;
             width: 16rem;
-            height: 23em;
+            height: 25em;
 
             border: 1px solid $light-gray;
             border-radius: 5px;
@@ -142,6 +132,7 @@ $light-gray:rgb(219, 219, 219);
             .card-top-img{
                 flex:6;
                 width: 100%;
+                object-fit: cover;
             }
 
             .card-bottom{
@@ -149,6 +140,28 @@ $light-gray:rgb(219, 219, 219);
                 
                 display: flex;
                 flex-direction: column;
+
+                .product-stock-success{
+                    font-weight: 600;
+                    font-size:12px;
+                    text-transform: uppercase;
+                    color:white;
+                    background-color: $primary-color;
+                    display: inline-block;
+                    padding:0px 4px;
+                    border-radius: 3px;;
+                }
+
+                .product-stock-fail{
+                    font-weight: 600;
+                    font-size:12px;
+                    text-transform: uppercase;
+                    color:white;
+                    background-color: rgb(211, 35, 35);
+                    display: inline-block;
+                    padding:0px 4px;
+                    border-radius: 3px;;
+                }
 
                 p,h5,input{
                     margin: 0.3em 0em;
@@ -176,4 +189,14 @@ $light-gray:rgb(219, 219, 219);
 
 
     }
+}
+
+#error-box{
+    display:block; 
+    padding:10px; 
+    border-radius:5px;
+    background-color:#e64545; 
+    color:white; 
+    font-weight:500;
+    text-align:center;
 }

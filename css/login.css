@@ -82,4 +82,8 @@ input {
     width: 90%;
   }
 }
+
+#carouselExampleSlidesOnly {
+  max-height: 600px !important;
+}
 /*# sourceMappingURL=login.css.map */

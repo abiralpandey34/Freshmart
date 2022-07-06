@@ -20,21 +20,6 @@
   font-weight: 500;
 }
 
-.noselect {
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Safari */
-  /* Konqueror HTML */
-  -moz-user-select: none;
-  /* Old versions of Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
-  user-select: none;
-  /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
-}
-
 .checked {
   color: orange;
 }
@@ -48,7 +33,7 @@
 }
 
 .container-fluid {
-  width: 80%;
+  width: 90% !important;
   margin: auto;
 }
 
@@ -58,8 +43,14 @@
   }
 }
 
+@media only screen and (max-width: 500px) {
+  .container-fluid {
+    width: 100%;
+    padding: 0px !important;
+  }
+}
+
 .navbar-container {
-  padding: 10px;
   margin-bottom: 20px;
 }
 
@@ -120,7 +111,7 @@
 }
 
 .product-container .product-info-container div {
-  margin: 0.4em 0.3em 0.4em 0em;
+  margin: 0.4em 0.1em 0.4em 0em;
 }
 
 .product-container .product-info-container .product-heading {
@@ -135,9 +126,39 @@
   font-size: 0.8em;
 }
 
+.product-container .product-info-container .product-stocks-success {
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: white;
+  background-color: #81c022;
+  display: inline;
+  padding: 5px 7px;
+  border-radius: 3px;
+}
+
+.product-container .product-info-container .product-stocks-fail {
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: white;
+  background-color: #d32323;
+  display: inline;
+  padding: 5px 7px;
+  border-radius: 3px;
+}
+
 .product-container .product-info-container .product-price {
   font-weight: 500;
   font-size: 1.2em;
+}
+
+.product-container .product-info-container .product-allergy-information p {
+  display: inline;
+  background-color: #ffe8e8;
+  border: 2px solid #ff9898;
+  border-radius: 3px;
+  padding: 5px 10px;
 }
 
 .product-container .product-info-container .product-form {
@@ -312,5 +333,23 @@
   color: white;
   width: 70px;
   cursor: pointer;
+}
+
+#error-box {
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #e64545;
+  color: white;
+  font-weight: 500;
+}
+
+#error-box-block {
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #e64545;
+  color: white;
+  font-weight: 500;
 }
 /*# sourceMappingURL=individualProduct.css.map */

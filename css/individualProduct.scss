@@ -22,16 +22,6 @@
     font-weight: 500;
 }
 
-.noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Old versions of Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
-  }
-
 //Declaring colors for all projects
 
 $primary-color: rgb(129, 192, 34);
@@ -58,17 +48,21 @@ $light-gray: rgb(206, 206, 206);
 // Navbar CSS
 
 .container-fluid{
-    width: 80%;
+    width: 90% !important;
     margin: auto;
 
     @media only screen and (max-width: 800px) {
         width: 90%;
     }
 
+    @media only screen and (max-width: 500px) {
+        width: 100%;
+        padding:0px !important;
+    }
+
 }
 
 .navbar-container{
-    padding: 10px;
     margin-bottom: 20px;
 }
 
@@ -116,7 +110,7 @@ $light-gray: rgb(206, 206, 206);
         padding: 1em 0.2em;
 
         div{
-            margin: 0.4em 0.3em 0.4em 0em;
+            margin: 0.4em 0.1em 0.4em 0em;
         }
 
 
@@ -132,9 +126,42 @@ $light-gray: rgb(206, 206, 206);
             font-size: 0.8em;
         }
 
+        .product-stocks-success{
+            font-weight: 600;
+            font-size:14px;
+            text-transform: uppercase;
+            color:white;
+            background-color: $primary-color;
+            display: inline;
+            padding:5px 7px;
+            border-radius: 3px;;
+        }
+
+        .product-stocks-fail{
+            font-weight: 600;
+            font-size:14px;
+            text-transform: uppercase;
+            color:white;
+            background-color: rgb(211, 35, 35);
+            display: inline;
+            padding:5px 7px;
+            border-radius: 3px;;
+        }
+
         .product-price{
             font-weight: 500;
             font-size: 1.2em;
+        }
+
+        .product-allergy-information{
+
+            p{  
+                display: inline;
+                background-color: rgb(255, 232, 232);
+                border:2px solid rgb(255, 152, 152);
+                border-radius: 3px;
+                padding: 5px 10px;
+            }
         }
 
         .product-form{
@@ -321,4 +348,22 @@ $light-gray: rgb(206, 206, 206);
     }
 
 
+}
+
+#error-box{
+    display:inline-block; 
+    padding:10px; 
+    border-radius:5px;
+    background-color:#e64545; 
+    color:white; 
+    font-weight:500;
+}
+
+#error-box-block{
+    display:block; 
+    padding:10px; 
+    border-radius:5px;
+    background-color:#e64545; 
+    color:white; 
+    font-weight:500;
 }
